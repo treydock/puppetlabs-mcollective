@@ -33,6 +33,7 @@ describe 'mcollective::plugin' do
         end
 
         context 'true' do
+          let(:pre_condition) { "class { 'mcollective': client => true }" }
           let(:params) { { :package => true, :client => true } }
           it { should contain_package('mcollective-fishcakes-client') }
         end
