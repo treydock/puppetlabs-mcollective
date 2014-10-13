@@ -18,8 +18,11 @@ define mcollective::plugin(
     }
 
     if $server {
+      # Install after mcollective::server::install and
       # set up a notification if we know we're managing a server
-      Package[$package_name] ~> Class['mcollective::server::service']
+      Class['mcollective::server::install'] ->
+      Package[$package_name] ~>
+      Class['mcollective::server::service']
     }
 
     # install the client package if we're installing on a $mcollective::client
@@ -27,6 +30,9 @@ define mcollective::plugin(
       package { "mcollective-${name}-client":
         ensure => $package_ensure,
       }
+
+      Class['mcollective::client::install'] ->
+      Package["mcollective-${name}-client"]
     }
   }
   else {
