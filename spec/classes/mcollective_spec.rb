@@ -173,6 +173,17 @@ describe 'mcollective' do
             it { should contain_exec('create-mcollective-metadata').with_path('/usr/local/sbin:/sbin:/bin:/usr/sbin:/usr/bin') }
           end
         end
+
+        describe '#yaml_fact_cron' do
+          context 'default (true)' do
+            it { should contain_cron('refresh-mcollective-metadata') }
+          end
+
+          context 'false' do
+            let(:params) { { :server => false } }
+            it { should_not contain_cron('refresh-mcollective-metadata') }
+          end
+        end
       end
 
       context 'facter' do
